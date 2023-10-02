@@ -1,35 +1,43 @@
-﻿using System;
+﻿using App.Services.AddNewContact;
+using App.Services.GetListContact;
+using PhoneBook.EntPoint;
+using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace UI.Forms
 {
     public partial class frmMain : Form
     {
-        public frmMain()
+        private readonly IGetListContactService getListContactService;
+
+        public frmMain(IGetListContactService getListContactService)
         {
             InitializeComponent();
+            this.getListContactService = getListContactService;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
 
-            // SettingGridView(contactList);
+            var contactList = getListContactService.Execute();
+            SettingGridView(contactList);
 
             this.Cursor = Cursors.Default;
         }
 
-        //private void SettingGridView(List<ContactListDto> contactList)
-        //{
-        //    dataGridView1.DataSource = contactList;
-        //    dataGridView1.Columns[0].HeaderText = "شناسه";
-        //    dataGridView1.Columns[1].HeaderText = "نام";
-        //    dataGridView1.Columns[2].HeaderText = "شماره تماس";
+        private void SettingGridView(List<ContactListDto> contactList)
+        {
+            dataGridView1.DataSource = contactList;
+            dataGridView1.Columns[0].HeaderText = "شناسه";
+            dataGridView1.Columns[1].HeaderText = "نام";
+            dataGridView1.Columns[2].HeaderText = "شماره تماس";
 
 
-        //    dataGridView1.Columns[1].Width = 200;
-        //    dataGridView1.Columns[2].Width = 200;
-        //}
+            dataGridView1.Columns[1].Width = 200;
+            dataGridView1.Columns[2].Width = 200;
+        }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -62,7 +70,8 @@ namespace UI.Forms
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            frmAddContact addContact = new frmAddContact();
+            var serviceAdd = (IAddNewContactService)Program.ServiceProvider.GetService(typeof(IAddNewContactService));
+            frmAddContact addContact = new frmAddContact(serviceAdd);
             addContact.ShowDialog();
             frmMain_Load(null, null);
         }
