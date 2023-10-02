@@ -12,15 +12,28 @@ namespace App.Services.GetListContact
         {
             this.dataBaseContext = dataBaseContext;
         }
-        public List<ContactListDto> Execute()
+        public List<ContactListDto> Execute(string searchKey = null)
         {
-            var contacts = dataBaseContext.Contacts.Select(c => new ContactListDto
+            var contactQuery = dataBaseContext.Contacts.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchKey))
+            {
+                contactQuery = contactQuery.Where(c =>
+                      c.Name.Contains(searchKey)
+                   || c.LastName.Contains(searchKey)
+                   || c.PhoneNumber.Contains(searchKey)
+                   || c.Company.Contains(searchKey)
+                );
+            }
+
+            var data = contactQuery.Select(c => new ContactListDto
             {
                 Id = c.Id,
                 FullName = $"{c.Name} {c.LastName}",
-                PhoneNumber = c.PhoneNumber,
+                PhoneNumber = c.PhoneNumber
             }).ToList();
-            return contacts;
+
+            return data;
         }
     }
 }

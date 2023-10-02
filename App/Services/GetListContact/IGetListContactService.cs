@@ -4,6 +4,6 @@ namespace App.Services.GetListContact
 {
     public interface IGetListContactService
     {
-        List<ContactListDto> Execute();
+        List<ContactListDto> Execute(string searchKey = null);
     }
 }

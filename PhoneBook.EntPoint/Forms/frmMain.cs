@@ -42,6 +42,8 @@ namespace UI.Forms
         private void btnSearch_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
+            var contstList = getListContactService.Execute(txtSearchKey.Text);
+            SettingGridView(contstList);
             this.Cursor = Cursors.Default;
         }
 
