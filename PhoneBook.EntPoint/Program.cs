@@ -1,5 +1,6 @@
 using App.DataBase;
 using App.Services.AddNewContact;
+using App.Services.DeleteContact;
 using App.Services.GetListContact;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
@@ -20,6 +21,7 @@ namespace PhoneBook.EntPoint
             services.AddScoped<IDataBaseContext, DatabaseContext>();
             services.AddScoped<IAddNewContactService, AddNewContactService>();
             services.AddScoped<IGetListContactService, GetListContactService>();
+            services.AddScoped<IDeleteContactService, DeleteContactService>();
             services.AddDbContext<DatabaseContext>();
 
             ServiceProvider = services.BuildServiceProvider();
@@ -36,7 +38,8 @@ namespace PhoneBook.EntPoint
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var getList = (IGetListContactService)ServiceProvider.GetService(typeof(IGetListContactService));
-            Application.Run(new frmMain(getList));
+            var deleteContact = (IDeleteContactService)ServiceProvider.GetService(typeof(IDeleteContactService));
+            Application.Run(new frmMain(getList, deleteContact));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using App.Services.AddNewContact;
+﻿using App.Dto;
+using App.Services.AddNewContact;
+using App.Services.DeleteContact;
 using App.Services.GetListContact;
 using PhoneBook.EntPoint;
 using System;
@@ -10,11 +12,13 @@ namespace UI.Forms
     public partial class frmMain : Form
     {
         private readonly IGetListContactService getListContactService;
+        private readonly IDeleteContactService deleteContactService;
 
-        public frmMain(IGetListContactService getListContactService)
+        public frmMain(IGetListContactService getListContactService, IDeleteContactService deleteContactService)
         {
             InitializeComponent();
             this.getListContactService = getListContactService;
+            this.deleteContactService = deleteContactService;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -50,6 +54,14 @@ namespace UI.Forms
         private void deleteContact_Click(object sender, EventArgs e)
         {
             int id = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
+            ResultDto result = deleteContactService.Execue(id);
+            if (result.IsSuccess)
+            {
+                MessageBox.Show(result.message, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                frmMain_Load(null, null);
+            }
+            else
+                MessageBox.Show(result.message, "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
         }
 
