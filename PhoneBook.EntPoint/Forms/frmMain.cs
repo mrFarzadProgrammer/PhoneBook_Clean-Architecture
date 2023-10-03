@@ -1,6 +1,7 @@
 ﻿using App.Dto;
 using App.Services.AddNewContact;
 using App.Services.DeleteContact;
+using App.Services.GetContactDetails;
 using App.Services.GetListContact;
 using PhoneBook.EntPoint;
 using System;
@@ -73,7 +74,8 @@ namespace UI.Forms
         private void ShowDetail()
         {
             var id = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-            frmDetailContact frmDetail = new frmDetailContact(id);
+            var getContactDetails = (IGetContactDetailsService)Program.ServiceProvider.GetService(typeof(IGetContactDetailsService));
+            frmDetailContact frmDetail = new frmDetailContact(id, getContactDetails);
             frmDetail.ShowDialog();
         }
 

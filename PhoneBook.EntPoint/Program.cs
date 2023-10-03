@@ -1,11 +1,11 @@
 using App.DataBase;
 using App.Services.AddNewContact;
 using App.Services.DeleteContact;
+using App.Services.GetContactDetails;
 using App.Services.GetListContact;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context;
 using System;
-using System.Configuration;
 using System.Windows.Forms;
 using UI.Forms;
 
@@ -17,15 +17,16 @@ namespace PhoneBook.EntPoint
 
         static void ConfigureServices()
         {
-            var services =new ServiceCollection();
+            var services = new ServiceCollection();
             services.AddScoped<IDataBaseContext, DatabaseContext>();
             services.AddScoped<IAddNewContactService, AddNewContactService>();
             services.AddScoped<IGetListContactService, GetListContactService>();
             services.AddScoped<IDeleteContactService, DeleteContactService>();
+            services.AddScoped<IGetContactDetailsService, GetContactDetailsService>();
             services.AddDbContext<DatabaseContext>();
 
             ServiceProvider = services.BuildServiceProvider();
-            
+
         }
         /// <summary>
         ///  The main entry point for the application.
