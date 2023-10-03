@@ -1,6 +1,7 @@
 ﻿using App.Dto;
 using App.Services.AddNewContact;
 using App.Services.DeleteContact;
+using App.Services.EditContact;
 using App.Services.GetContactDetails;
 using App.Services.GetListContact;
 using PhoneBook.EntPoint;
@@ -95,7 +96,9 @@ namespace UI.Forms
         private void button2_Click(object sender, EventArgs e)
         {
             var id = int.Parse(dataGridView1.CurrentRow.Cells[0].Value.ToString());
-            frmEditContact editContact = new frmEditContact(id);
+            var editContactData = (IEditContactService)Program.ServiceProvider.GetService(typeof(IEditContactService));
+            var getContactDetails = (IGetContactDetailsService)Program.ServiceProvider.GetService(typeof(IGetContactDetailsService));
+            frmEditContact editContact = new frmEditContact(id, editContactData, getContactDetails);
             editContact.ShowDialog();
             frmMain_Load(null, null);
         }

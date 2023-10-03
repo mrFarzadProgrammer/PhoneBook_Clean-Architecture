@@ -1,6 +1,7 @@
 using App.DataBase;
 using App.Services.AddNewContact;
 using App.Services.DeleteContact;
+using App.Services.EditContact;
 using App.Services.GetContactDetails;
 using App.Services.GetListContact;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ namespace PhoneBook.EntPoint
             services.AddScoped<IGetListContactService, GetListContactService>();
             services.AddScoped<IDeleteContactService, DeleteContactService>();
             services.AddScoped<IGetContactDetailsService, GetContactDetailsService>();
+            services.AddScoped<IEditContactService, EditContactService>();
             services.AddDbContext<DatabaseContext>();
 
             ServiceProvider = services.BuildServiceProvider();
